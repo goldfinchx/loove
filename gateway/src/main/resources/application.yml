@@ -1,0 +1,16 @@
+eureka:
+  client:
+    register-with-eureka: false
+
+spring:
+  application:
+    name: gateway
+  config:
+    import: optional:configserver:http://localhost:8882
+  cloud:
+    gateway:
+      mvc:
+        routes: []
+
+server:
+  port: 8880
