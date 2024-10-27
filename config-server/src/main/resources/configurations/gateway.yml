@@ -1,0 +1,14 @@
+eureka:
+  client:
+    eureka-server-port: 8881
+    register-with-eureka: false
+    fetch-registry: false
+
+#spring:
+#  cloud:
+#    gateway:
+#      mvc:
+#        routes: []
+
+server:
+  port: 8880

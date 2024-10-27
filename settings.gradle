@@ -1,4 +1,4 @@
 rootProject.name = 'Loove'
 include('gateway')
 include('discovery')
-include('configs')
+include('config-server')
