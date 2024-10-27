@@ -1,2 +1,3 @@
 rootProject.name = 'Loove'
 include('gateway')
+include('discovery')
