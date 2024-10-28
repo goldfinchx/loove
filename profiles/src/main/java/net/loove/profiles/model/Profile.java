@@ -5,30 +5,29 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
-@Getter
-@Setter
+@Data
 @Builder
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
-public class Profile {
+public class Profile implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private String bio;
-
     private String name;
 
+    private String bio;
+
+    @Range(min = 18, max = 99)
     private int age;
 
     @Enumerated
@@ -45,11 +44,20 @@ public class Profile {
     @ElementCollection
     private Set<Interest> interests;
 
+    public Profile() {
+        this.name = "";
+        this.bio = "";
+        this.age = 18;
+        this.gender = Gender.MALE;
+        this.objective = Objective.RELATIONSHIP;
+        this.preferences = new HashSet<>();
+        this.interests = new HashSet<>();
+    }
+
     public enum Objective {
-        FRIENDS,
-        DATING,
-        RELATIONSHIP,
         HOOKUP,
+        RELATIONSHIP,
+        FRIENDSHIP,
         OTHER
     }
 
