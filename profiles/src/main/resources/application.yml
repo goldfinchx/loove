@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: profiles
+  config:
+    import: optional:configserver:http://localhost:8882
