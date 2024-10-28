@@ -4,11 +4,15 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
 
-#spring:
-#  cloud:
-#    gateway:
-#      mvc:
-#        routes: []
+spring:
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: profiles
+            uri: http://localhost:8900
+            predicates:
+              - Path=/api/v1/profiles/**
 
 server:
   port: 8880
