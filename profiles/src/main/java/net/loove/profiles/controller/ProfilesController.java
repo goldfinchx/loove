@@ -23,8 +23,6 @@ public class ProfilesController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Profile> getProfile(@PathVariable Long id) {
-        log.info("Fetching profile with id {}", id);
-        System.out.println("Fetching profile with id " + id);
         return this.service.getProfile(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
