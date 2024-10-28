@@ -17,7 +17,6 @@ import lombok.Setter;
 @Setter
 @Builder
 @Entity
-@Table(name = "profiles")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Profile {
