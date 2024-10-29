@@ -6,10 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "rabbitmq")
-public class RabbitProperties {
+@ConfigurationProperties(prefix = "websocket")
+public class WebSocketProperties {
 
-    private String queuePrefix;
-    private String exchangeName;
+    private String messagesEndpoint;
 
 }

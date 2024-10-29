@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/styles.css">
+  <title>Chats</title>
+</head>
+<body>
+
+<h2>Chats</h2>
+<div class="chat-container" id="chat-page">
+  <div class="chats-list">
+    <div class="chats-list-container">
+      <h2>Chats</h2>
+      <ul id="chats-list">
+      </ul>
+    </div>
+  </div>
+
+  <div class="chat-area">
+    <h2 id="chat-title"></h2>
+    <div class="chat-area" id="chat-messages"></div>
+
+    <form id="chat-form" name="chat-form" class="hidden">
+      <div class="chat-input">
+        <input autocomplete="off" type="text" id="chat-input" placeholder="Type your message...">
+        <button>Send</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script type="module" src="/js/chat.js"></script>
+</body>
+</html>\

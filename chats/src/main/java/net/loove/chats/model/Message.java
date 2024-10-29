@@ -11,7 +11,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry;
 
 @Getter
 @Setter
@@ -34,11 +33,11 @@ public class Message {
 
     private Instant at;
 
-    public Message(Chat chat, Long sender, String content) {
-        this.chat = chat;
-        this.sender = sender;
-        this.content = content;
-        this.at = Instant.now();
+    public Long getReceiver() {
+        return this.chat.getUsers().stream()
+                .filter(user -> !user.equals(this.sender))
+                .findFirst()
+                .orElse(null);
     }
 
 }
