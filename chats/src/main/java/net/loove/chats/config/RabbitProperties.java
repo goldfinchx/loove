@@ -1,14 +1,15 @@
 package net.loove.chats.config;
 
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Getter
+@Data
 @Component
-@ConfigurationProperties(prefix = "chats")
-public class ChatsProperties {
+@ConfigurationProperties(prefix = "rabbitmq")
+public class RabbitProperties {
 
     private String queuePrefix;
+    private String exchangeName;
 
 }

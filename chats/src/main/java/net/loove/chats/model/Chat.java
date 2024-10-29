@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,5 +31,9 @@ public class Chat {
     @OneToMany
     private Set<Message> messages;
 
+    public Chat(Long... users) {
+        this.users = Set.of(users);
+        this.messages = new HashSet<>();
+    }
 
 }

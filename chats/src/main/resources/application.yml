@@ -1,6 +1,5 @@
 spring:
   application:
     name: chats
-
-chats:
-  queue-prefix: chats.queue
+  config:
+    import: optional:configserver:http://localhost:8882
