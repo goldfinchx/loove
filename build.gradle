@@ -51,4 +51,34 @@ subprojects {
     tasks.named('test') {
         useJUnitPlatform()
     }
+
+    tasks.register('containerize') {
+        doLast {
+            println "Building docker image for ${project.name}"
+
+            exec {
+                commandLine 'docker', 'buildx', 'build', '-t', "loove/${project.name}:latest", "--build-arg",
+                        "MODULE_NAME=${project.name}", "."
+            }
+        }
+    }
+}
+
+tasks.register('containerizeAll') {
+    doLast {
+        for (final def subproject in subprojects) {
+            if (subproject.name == 'shared') {
+                continue;
+            }
+
+            println "Building docker image for ${subproject.name}"
+
+            exec {
+                commandLine 'docker', 'buildx', 'build', '-t', "loove/${subproject.name}:latest", "--build-arg",
+                        "MODULE_NAME=${subproject.name}", "."
+            }
+
+        }
+    }
+
 }
