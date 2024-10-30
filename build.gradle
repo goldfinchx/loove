@@ -4,37 +4,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.6'
 }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
-
-    dependencies {
-        implementation 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        implementation 'org.springframework.boot:spring-boot-starter-actuator'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-        if (project.name != 'shared') {
-            implementation project(':shared')
-        }
-    }
-
-    ext {
-        set('springCloudVersion', "2023.0.3")
-    }
-
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-        }
-    }
-
-    tasks.named('test') {
-        useJUnitPlatform()
-    }
-}
 
 allprojects {
     group = 'net.loove'
@@ -52,3 +21,34 @@ allprojects {
     }
 }
 
+ext {
+    set('springCloudVersion', "2023.0.3")
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencies {
+        implementation 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+        if (project.name != 'shared') {
+            implementation project(':shared')
+        }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
