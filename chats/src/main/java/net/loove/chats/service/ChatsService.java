@@ -9,10 +9,13 @@ import net.loove.chats.dto.MessageDTO;
 import net.loove.chats.model.Chat;
 import net.loove.chats.model.Message;
 import net.loove.chats.repository.ChatsRepository;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
+@CacheConfig(cacheNames = "chats")
 @RequiredArgsConstructor
 public class ChatsService {
 
@@ -36,6 +39,7 @@ public class ChatsService {
         this.messagingTemplate.convertAndSendToUser(receiver, this.properties.getMessagesEndpoint(), messageDto);
     }
 
+    @CachePut(key = "#chat.id")
     public List<ChatDTO> getUserChats(Long userId) {
         return this.repository.findByUser(userId)
             .stream()
@@ -54,6 +58,7 @@ public class ChatsService {
                 .build();
     }
 
+    @CachePut(key = "#chatId")
     public List<MessageDTO> getChatMessages(Long chatId) {
         final Chat chat = this.repository.findById(chatId).orElseThrow();
         return chat.getMessages()
