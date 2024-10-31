@@ -3,3 +3,19 @@ spring:
     name: notifications
   config:
     import: optional:configserver:http://localhost:8882
+  kafka:
+
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: notifications
+      client-id: ${spring.application.name}
+      bootstrap-servers: localhost:9094
+      properties:
+        spring.json.value.default.type: net.loove.notifications.dtos.Event
+        spring.json.type.mapping: "event:net.loove.notifications.dtos.Event"
+        spring.json.trusted.packages: "*"
+
+
+notifications:
+  topics: events1,events2
