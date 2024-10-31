@@ -1,27 +1,27 @@
-package net.loove.chats.service;
+package net.loove.chats.services;
 
 import java.time.Instant;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import net.loove.chats.config.WebSocketProperties;
+import net.loove.chats.configs.WebSocketProperties;
 import net.loove.chats.dto.ChatDTO;
 import net.loove.chats.dto.MessageDTO;
+import net.loove.chats.events.NotificationEvent;
 import net.loove.chats.model.Chat;
 import net.loove.chats.model.Message;
 import net.loove.chats.repository.ChatsRepository;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-@CacheConfig(cacheNames = "chats")
 @RequiredArgsConstructor
 public class ChatsService {
 
     private final ChatsRepository repository;
     private final WebSocketProperties properties;
     private final SimpMessagingTemplate messagingTemplate;
+    private final EventsService eventsService;
 
     public void handleMessage(MessageDTO messageDto) {
         final Chat chat = this.repository.findByUsers(messageDto.getSender(), messageDto.getReceiver()).orElseThrow();
@@ -37,9 +37,12 @@ public class ChatsService {
 
         final String receiver = String.valueOf(messageDto.getReceiver());
         this.messagingTemplate.convertAndSendToUser(receiver, this.properties.getMessagesEndpoint(), messageDto);
+
+        final NotificationEvent notificationEvent = new NotificationEvent(messageDto.getReceiver(), "You've got new message!", messageDto.getContent());
+        this.eventsService.publishNotificationEvent(notificationEvent);
     }
 
-    @CachePut(key = "#chat.id")
+    @CachePut(cacheNames = "user-chats", key = "#userId")
     public List<ChatDTO> getUserChats(Long userId) {
         return this.repository.findByUser(userId)
             .stream()
@@ -58,7 +61,7 @@ public class ChatsService {
                 .build();
     }
 
-    @CachePut(key = "#chatId")
+    @CachePut(cacheNames = "chat-messages", key = "#chatId")
     public List<MessageDTO> getChatMessages(Long chatId) {
         final Chat chat = this.repository.findById(chatId).orElseThrow();
         return chat.getMessages()

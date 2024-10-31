@@ -1,4 +1,4 @@
-package net.loove.chats.config;
+package net.loove.chats.configs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;

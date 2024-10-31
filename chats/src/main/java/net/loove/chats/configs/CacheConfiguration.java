@@ -1,4 +1,4 @@
-package net.loove.chats.config;
+package net.loove.chats.configs;
 
 
 import org.springframework.cache.annotation.EnableCaching;

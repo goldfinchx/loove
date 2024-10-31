@@ -30,4 +30,9 @@ public class Event implements Serializable {
      */
     private String service;
 
+    /**
+     * The timestamp of the event.
+     */
+    private Long timestamp;
+
 }
