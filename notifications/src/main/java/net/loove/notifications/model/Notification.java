@@ -3,6 +3,7 @@ package net.loove.notifications.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,5 +23,7 @@ public class Notification {
     private Long userId;
 
     private String message;
+
+    private Instant created;
 
 }
