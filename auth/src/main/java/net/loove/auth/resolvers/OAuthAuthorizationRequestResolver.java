@@ -6,14 +6,15 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class OAuthAuthorizationRequestResolver implements org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver {
+public class OAuthAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 
-    private final org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver defaultResolver;
+    private final OAuth2AuthorizationRequestResolver defaultResolver;
 
     public OAuthAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, "/oauth2/authorization");

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,6 +49,11 @@ public class AuthUser implements UserDetails, OidcUser {
         this.attributes = user.getAttributes().toString();
         this.claims = user.getAttributes().toString();
         this.token = user.getAttribute("id_token");
+    }
+
+    public AuthUser(@Email String email, String encodedPassword) {
+        this.email = email;
+        this.password = encodedPassword;
     }
 
     @Override
