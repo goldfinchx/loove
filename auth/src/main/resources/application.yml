@@ -1,31 +1,5 @@
 spring:
   application:
     name: auth
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/loove
-    username: postgres
-    password: 123
-  jpa:
-    hibernate:
-      ddl-auto: update
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 486412318811-6a6k4upu4nhkosdljkq2qdosafv7qluc.apps.googleusercontent.com
-            client-secret: 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
-            scope:
-              - email
-              - profile
-        provider:
-          google:
-            authorization-uri: https://accounts.google.com/o/oauth2/auth
-            token-uri: https://accounts.google.com/o/oauth2/token
-            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-            user-name-attribute: sub
-            issuer-uri: https://accounts.google.com
-server:
-  port: 8903
-
+  config:
+    import: optional:configserver:http://localhost:8882
