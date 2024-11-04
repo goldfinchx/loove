@@ -9,6 +9,7 @@ The app is built to focus on scalability, security, and performance.
 - Config Server
 - Auth
 - Profiles
+- Notifications
 - Chats
 
 ### Stack
