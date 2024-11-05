@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class Profile implements Serializable {
 
     private String bio;
 
-    @Range(min = 18, max = 99)
+    @Min(18)
     private int age;
 
     @Enumerated
