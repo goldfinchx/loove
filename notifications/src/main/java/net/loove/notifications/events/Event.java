@@ -1,4 +1,4 @@
-package net.loove.chats.events;
+package net.loove.notifications.events;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
@@ -9,9 +9,9 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-@AllArgsConstructor
 @NoArgsConstructor
-public abstract class Event implements Serializable {
+@AllArgsConstructor
+public class Event implements Serializable {
 
     private String body;
 
@@ -19,6 +19,6 @@ public abstract class Event implements Serializable {
     private Long timestamp = System.currentTimeMillis();
 
     @Builder.Default
-    private String service = "chats";
+    private String service = "notifications";
 
 }

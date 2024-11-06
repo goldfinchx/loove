@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "notifications")
-public class KafkaTopicsConfigurationProperties {
+@ConfigurationProperties(prefix = "events.topics")
+public class EventTopicsProperties {
 
-    private String topics;
+    private String chatMessages;
 
 }

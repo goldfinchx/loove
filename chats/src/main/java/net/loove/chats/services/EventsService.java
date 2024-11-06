@@ -15,6 +15,7 @@ public class EventsService {
     private final KafkaTemplate<String, Event> template;
     private final EventsTopicsProperties topicsProperties;
 
+
     public void publishEvent(Event event, String topic) {
         this.template.send(topic, event);
     }
@@ -24,6 +25,8 @@ public class EventsService {
             .chatId(message.getChat().getId())
             .sender(message.getSender())
             .receiver(message.getReceiver())
+            .body(message.getContent())
+            .timestamp(message.getAt().toEpochMilli())
             .build();
 
         this.publishEvent(event, this.topicsProperties.getChatMessagesTopic());
