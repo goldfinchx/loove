@@ -1,4 +1,4 @@
-package net.loove.chats.configs;
+package net.loove.chats.configs.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
