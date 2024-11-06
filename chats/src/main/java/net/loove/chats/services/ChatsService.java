@@ -1,15 +1,15 @@
 package net.loove.chats.services;
 
-import java.time.Instant;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import net.loove.chats.configs.WebSocketProperties;
+import net.loove.chats.configs.properties.WebSocketProperties;
 import net.loove.chats.dto.ChatDTO;
 import net.loove.chats.dto.MessageDTO;
-import net.loove.chats.events.NotificationEvent;
 import net.loove.chats.model.Chat;
 import net.loove.chats.model.Message;
 import net.loove.chats.repository.ChatsRepository;
+import net.loove.chats.utils.ChatSerializer;
+import net.loove.chats.utils.MessageSerializer;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -22,43 +22,39 @@ public class ChatsService {
     private final WebSocketProperties properties;
     private final SimpMessagingTemplate messagingTemplate;
     private final EventsService eventsService;
+    private final ChatSerializer chatSerializer;
+    private final MessageSerializer messageSerializer;
 
     public void handleMessage(MessageDTO messageDto) {
-        final Chat chat = this.repository.findByUsers(messageDto.getSender(), messageDto.getReceiver()).orElseThrow();
-        final Message msg = Message.builder()
-            .chat(chat)
-            .sender(messageDto.getSender())
-            .content(messageDto.getContent())
-            .at(Instant.ofEpochMilli(messageDto.getAt()))
-            .build();
+        final Chat chat = this.repository.findByUsers(messageDto.getReceiver(), messageDto.getSender()).orElseThrow();
+        final Message msg = this.messageSerializer.deserialize(messageDto, chat);
+        this.saveMessage(msg);
+        this.sendMessage(messageDto);
 
-        chat.getMessages().add(msg);
-        this.repository.save(chat);
+        this.eventsService.publishChatMessageEvent(msg);
+    }
 
+    private void sendMessage(MessageDTO messageDto) {
         final String receiver = String.valueOf(messageDto.getReceiver());
         this.messagingTemplate.convertAndSendToUser(receiver, this.properties.getMessagesEndpoint(), messageDto);
+    }
 
-        final NotificationEvent notificationEvent = new NotificationEvent(messageDto.getReceiver(), "You've got new message!", messageDto.getContent());
-        this.eventsService.publishNotificationEvent(notificationEvent);
+    public void saveMessage(Message message) {
+        final Chat chat = message.getChat();
+        chat.getMessages().add(message);
+        this.saveChat(chat);
+    }
+
+    public void saveChat(Chat chat) {
+        this.repository.save(chat);
     }
 
     @CachePut(cacheNames = "user-chats", key = "#userId")
     public List<ChatDTO> getUserChats(Long userId) {
         return this.repository.findByUser(userId)
             .stream()
-            .map(this::serializeChat)
+            .map(this.chatSerializer::serialize)
             .toList();
-    }
-
-    public ChatDTO serializeChat(Chat chat) {
-        return ChatDTO.builder()
-                .id(chat.getId())
-                .users(chat.getUsers().toArray(new Long[0]))
-                .messages(chat.getMessages()
-                    .stream()
-                    .map(this::serializeMessage)
-                    .toArray(MessageDTO[]::new))
-                .build();
     }
 
     @CachePut(cacheNames = "chat-messages", key = "#chatId")
@@ -66,33 +62,8 @@ public class ChatsService {
         final Chat chat = this.repository.findById(chatId).orElseThrow();
         return chat.getMessages()
             .stream()
-            .map(this::serializeMessage)
+            .map(this.messageSerializer::serialize)
             .toList();
-    }
-
-    public void saveChat(Chat chat) {
-        this.repository.save(chat);
-    }
-
-    private Message deserializeMessage(MessageDTO messageDto) {
-        final Chat chat = this.repository.findByUsers(messageDto.getSender(), messageDto.getReceiver()).orElseThrow();
-
-        return Message.builder()
-            .chat(chat)
-            .sender(messageDto.getSender())
-            .content(messageDto.getContent())
-            .at(Instant.ofEpochMilli(messageDto.getAt()))
-            .build();
-    }
-
-    private MessageDTO serializeMessage(Message message) {
-        return MessageDTO.builder()
-                .id(message.getId())
-                .receiver(message.getReceiver())
-                .sender(message.getSender())
-                .content(message.getContent())
-                .at(message.getAt().toEpochMilli())
-                .build();
     }
 
 }

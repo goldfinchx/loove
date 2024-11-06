@@ -1,24 +1,33 @@
 package net.loove.chats.services;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import net.loove.chats.configs.EventsConfigurationProperties;
-import net.loove.chats.events.NotificationEvent;
-import org.springframework.core.env.Environment;
+import net.loove.chats.configs.properties.EventsTopicsProperties;
+import net.loove.chats.events.ChatMessageEvent;
+import net.loove.chats.events.Event;
+import net.loove.chats.model.Message;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EventsService {
 
-    private final KafkaTemplate<String, NotificationEvent> template;
-    private final EventsConfigurationProperties properties;
-    private final Environment environment;
+    private final KafkaTemplate<String, Event> template;
+    private final EventsTopicsProperties topicsProperties;
 
-    public void publishNotificationEvent(NotificationEvent notificationEvent) {
-        this.template.send(this.properties.getNotificationsTopic(), notificationEvent);
+    public void publishEvent(Event event, String topic) {
+        this.template.send(topic, event);
     }
+
+    public void publishChatMessageEvent(Message message) {
+        final Event event = ChatMessageEvent.builder()
+            .chatId(message.getChat().getId())
+            .sender(message.getSender())
+            .receiver(message.getReceiver())
+            .build();
+
+        this.publishEvent(event, this.topicsProperties.getChatMessagesTopic());
+    }
+
 
 }
