@@ -19,7 +19,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 @Slf4j
 @WebAppConfiguration
@@ -30,14 +29,9 @@ class ProfilesControllerTest {
     private ProfilesService service;
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
-
-
-    @Autowired
     private MockMvc mvc;
 
     private final JsonMapper jsonMapper = new JsonMapper();
-
 
     @Test
     void getProfile_returnsProfile_whenProfileExists() throws Exception {
@@ -47,11 +41,9 @@ class ProfilesControllerTest {
         when(this.service.getProfile(1L)).thenReturn(Optional.of(profile));
 
         final String profileJson = this.jsonMapper.writeValueAsString(profile);
-
         this.mvc.perform(MockMvcRequestBuilders.get("/api/v1/profiles/1"))
             .andExpect(status().isOk())
             .andExpect(content().json(profileJson));
-
     }
 
     @Test
@@ -85,9 +77,8 @@ class ProfilesControllerTest {
 
         final String profileJson = this.jsonMapper.writeValueAsString(profile);
         final String createdProfileJson = this.jsonMapper.writeValueAsString(createdProfile);
-
         final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/profiles")
-            .contentType(MediaType.APPLICATION_JSON)  // Set the Content-Type header
+            .contentType(MediaType.APPLICATION_JSON)
             .content(profileJson);
 
         this.mvc.perform(requestBuilder)
@@ -101,7 +92,6 @@ class ProfilesControllerTest {
         profile.setAge(17);
 
         final String profileJson = this.jsonMapper.writeValueAsString(profile);
-
         final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/profiles")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(profileJson);
