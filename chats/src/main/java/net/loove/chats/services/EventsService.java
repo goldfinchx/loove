@@ -26,7 +26,7 @@ public class EventsService {
             .sender(message.getSender())
             .receiver(message.getReceiver())
             .body(message.getContent())
-            .timestamp(message.getAt().toEpochMilli())
+            .timestamp(message.getAt())
             .build();
 
         this.publishEvent(event, this.topicsProperties.getChatMessagesTopic());

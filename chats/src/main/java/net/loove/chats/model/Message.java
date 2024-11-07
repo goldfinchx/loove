@@ -31,7 +31,8 @@ public class Message {
 
     private String content;
 
-    private Instant at;
+    @Builder.Default
+    private Long at = System.currentTimeMillis();
 
     public Long getReceiver() {
         return this.chat.getUsers().stream()

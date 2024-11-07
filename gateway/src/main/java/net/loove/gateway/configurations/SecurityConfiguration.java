@@ -10,12 +10,11 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @Configuration
 public class SecurityConfiguration {
 
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity security) throws Exception {
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity security) {
         return security
             .authorizeExchange(exchanges -> exchanges
                 .pathMatchers("/eureka/**", "/css/**", "/js/**", "/images/**", "/api/**", "/logout", "/registration/**", "/registration", "/login/**", "/login", "/oauth2/**").permitAll()
-                .anyExchange().authenticated()
-            )
+                .anyExchange().authenticated())
             .oauth2ResourceServer(customizer -> customizer.jwt(Customizer.withDefaults()))
             .build();
     }

@@ -3,7 +3,7 @@ package net.loove.notifications.controllers;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import net.loove.notifications.model.Notification;
-import net.loove.notifications.service.NotificationsService;
+import net.loove.notifications.services.NotificationsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

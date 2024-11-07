@@ -1,4 +1,4 @@
-package net.loove.notifications.configurations;
+package net.loove.notifications.configurations.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

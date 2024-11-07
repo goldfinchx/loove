@@ -13,13 +13,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class ChatMessageEvent extends Event {
 
+    private Long sender;
     private Long receiver;
-
-    @Override
-    public String toString() {
-        return "ChatMessageEvent{" +
-               "receiver=" + this.receiver +
-               "} " + super.toString();
-    }
 
 }

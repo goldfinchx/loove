@@ -1,6 +1,5 @@
 package net.loove.chats.utils;
 
-import java.time.Instant;
 import net.loove.chats.dto.MessageDTO;
 import net.loove.chats.model.Chat;
 import net.loove.chats.model.Message;
@@ -14,7 +13,7 @@ public class MessageSerializer {
             .chat(chat)
             .sender(messageDto.getSender())
             .content(messageDto.getContent())
-            .at(Instant.ofEpochMilli(messageDto.getAt()))
+            .at(messageDto.getAt())
             .build();
     }
 
@@ -24,7 +23,7 @@ public class MessageSerializer {
             .receiver(message.getReceiver())
             .sender(message.getSender())
             .content(message.getContent())
-            .at(message.getAt().toEpochMilli())
+            .at(message.getAt())
             .build();
     }
 
