@@ -15,5 +15,5 @@ It allows users to create profiles, search for others, chat with them, and more.
 - Spring: Boot, Cloud, Security, Data
 - Eureka, PostgreSQL, Hibernate, Redis, Kafka
 - Docker, Docker Compose
-- REST, WebSockets, Thymeleaf
+- REST, OpenFeign, WebSockets, Thymeleaf
 - OAuth2
