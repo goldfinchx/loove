@@ -1,7 +1,6 @@
 ### Overview
 **Loove** - is a dating web app built on microservices architecture with Spring Cloud. \
 It allows users to create profiles, search for others, chat with them, and more. \
-The app is built to focus on scalability, security, and performance.
 
 ### Microservices
 - Gateway
