@@ -25,8 +25,8 @@ public class NotificationsService {
         this.repository.deleteById(id);
     }
 
-    public void saveNotification(Notification notification) {
-        this.repository.save(notification);
+    public Notification saveNotification(Notification notification) {
+        return this.repository.save(notification);
     }
 
     @CachePut(key = "#id", cacheNames = "notifications", unless = "#result.isEmpty()")
